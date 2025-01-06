@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery/Reception QR Code Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            background: url('https://www.designtagebuch.de/wp-content/uploads/mediathek//2024/08/politecnico-milano-logo-b.jpg') no-repeat center center fixed;
+            color: #fff;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+        }
+        .card {
+            padding: 30px;
+            border-radius: 13px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        label {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card bg-dark text-white">
+            <h3 class="text-center mb-4">Generate QR Code</h3>
+            <form action="/generate_qr" method="POST" onsubmit="return validateForm();">
+                <div class="form-group">
+                    <label for="action">Select Action</label>
+                    <select name="action" id="action" class="form-control" required>
+                        <option value="1">Delivery</option>
+                        <option value="0">Reception</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="door_ramp">Door or Ramp</label>
+                    <select name="door_ramp" id="door_ramp" class="form-control" required>
+                        <option value="1">Door</option>
+                        <option value="0">Ramp</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="garage" name="location" value="Garage">
+                            <label for="garage" class="form-check-label">Garage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="b15" name="location" value="B15">
+                            <label for="b15" class="form-check-label">B15</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="b22" name="location" value="B22">
+                            <label for="b22" class="form-check-label">B22</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bovisa" name="location" value="Bovisa">
+                            <label for="bovisa" class="form-check-label">Bovisa</label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="location_combined" id="location_combined">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Generate QR Code</button>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        function combineLocations() {
+            const selectedLocations = Array.from(document.querySelectorAll('input[name="location"]:checked'))
+                .map(checkbox => checkbox.value)
+                .join(', ');
+            document.getElementById('location_combined').value = selectedLocations;
+        }
+
+        function validateForm() {
+            combineLocations();
+            const combinedLocations = document.getElementById('location_combined').value;
+            if (!combinedLocations) {
+                alert('Please select at least one location.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
+

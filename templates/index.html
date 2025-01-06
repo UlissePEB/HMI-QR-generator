@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery/Reception QR Code Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #133337;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+        }
+        .card {
+            padding: 30px;
+            border-radius: 13;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h3 class="text-center mb-4">Generate QR Code</h3>
+            <form action="/generate_qr" method="POST" onsubmit="combineLocations()">
+            
+                <div class="form-group">
+                    <label for="action">Select Action</label>
+                    <select name="action" id="action" class="form-control" required>
+                        <option value="1"> Delivery </option>
+                        <option value="0"> Reception </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="door_ramp">Door or Ramp</label>
+                    <select name="door_ramp" id="door_ramp" class="form-control" required>
+                        <option value="1"> Door </option>
+                        <option value="0"> Ramp </option>
+                    </select>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label>Location</label>
+                    <div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="garage" name="location" value="Garage">
+                            <label class="form-check-label" for="Garage">Garage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="b15" name="location" value="B15">
+                            <label class="form-check-label" for="B15">B15</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="b22" name="location" value="B22">
+                            <label class="form-check-label" for="B22">B22</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="bovisa" name="location" value="Bovisa">
+                            <label class="form-check-label" for="Bovisa">Bovisa</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden input to store combined locations as a comma-separated string -->
+                    <input type="hidden" name="location_combined" id="location_combined">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Generate QR Code</button>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- JavaScript to combine selected locations -->
+    <script>
+        function combineLocations() {
+            const selectedLocations = Array.from(document.querySelectorAll('input[name="location"]:checked'))
+                .map(checkbox => checkbox.value)
+                .join(', ');
+            document.getElementById('location_combined').value = selectedLocations;
+        }
+    </script>
+</body>
+</html>
+
